@@ -6,65 +6,125 @@ public class Fraction {
 
     //将分数转化为假分数，整数会变成该整数除以 1
     public static String improperFraction(String proper) {
-        if (!proper.contains("’")) return proper + "/" + "1";
+        //无分号时
+        if (!proper.contains("’")) {
+            //纯整数
+            if (!proper.contains("/")) return proper + "/" + "1";
+            //已满足 分子/分母 形式
+            return proper;
+        }
+        //按’ / 把一个真分数拆成3段
         String[] strings = proper.split("[’/]");
-        int integer, numerator, denominator;
+        //整数部分，分子，分母
+        long integer, numerator, denominator;
+        //整数
         integer = Integer.parseInt(strings[0]);
-        if (strings.length <= 2) return String.valueOf(integer);
+        //分子
         numerator = Integer.parseInt(strings[1]);
+        //分母
         denominator = Integer.parseInt(strings[2]);
+        //整数为 0 , 直接返回分子/分母
+        if (integer == 0) return String.valueOf(numerator) + "/" + String.valueOf(denominator);
+        //假分数分子
         numerator = (numerator + Math.abs(integer) * denominator) * (integer / Math.abs(integer));
+        //分子分母拼接
         return String.valueOf(numerator) + "/" + String.valueOf(denominator);
     }
 
     //将假分数转化为真分数
     public static String properFraction(String improper) {
+        //improper是整数
         if (!improper.contains("/")) return improper;
+        //将improper分为分子和分母
         String[] strings = improper.split("/");
+        //定义整数，分子，分母
         int integer = 1, numerator, denominator;
+        //分子
         numerator = Integer.parseInt(strings[0]);
+        //分母
         denominator = Integer.parseInt(strings[1]);
+        //分母不能为 0
+        if (denominator == 0) return null;
+        //将分母的负号移至分子
+        if (denominator < 0) {
+            numerator *= -1;
+            denominator *= -1;
+        }
+        //分子小于分母时无整数
+        if (Math.abs(numerator) < denominator) return String.valueOf(numerator) + "/" + String.valueOf(denominator);
+        //将分子的负号移至整数
         if (numerator < 0) {
             integer = -1;
             numerator = Math.abs(numerator);
         }
-        if (numerator < denominator) return improper;
-        if (numerator % denominator == 0) return String.valueOf(numerator / denominator);
+        //分子是分母的倍数时只有整数
+        if (numerator % denominator == 0) return String.valueOf(numerator * integer / denominator);
+        //整数部分
         integer = numerator / denominator * integer;
+        //分子
         numerator %= denominator;
+        //拼接
         return String.valueOf(integer) + "’" + String.valueOf(numerator) + "/" + String.valueOf(denominator);
     }
 
     //分数计算
     public static String calculate(String fraction1, String fraction2, String operator) {
-        int numerator1 = getNumerator(fraction1);
-        int numerator2 = getNumerator(fraction2);
-        int denominator1 = getDenominator(fraction1);
-        int denominator2 = getDenominator(fraction2);
+        if (fraction1 == null || fraction2 == null) return null;
+        //取分子
+        long numerator1 = getNumerator(fraction1);
+        long numerator2 = getNumerator(fraction2);
+        //取分母
+        long denominator1 = getDenominator(fraction1);
+        long denominator2 = getDenominator(fraction2);
+        //分数加
         if (operator.equals("➕")) {
-            int l = lcm(denominator1, denominator2);
+            if (numerator1 == 0) return fraction2;
+            if (numerator2 == 0) return fraction1;
+            //取分母最小公倍数
+            long l = lcm(denominator1, denominator2);
             numerator1 = l / denominator1 * numerator1;
             numerator2 = l / denominator2 * numerator2;
+            if (numerator1 + numerator2 == 0) return "0";
+            //rpf(int numerator,int denominator)约分
             return properFraction(rof(numerator1 + numerator2, l));
         }
+        //分数减
         if (operator.equals("➖")) {
-            int l = lcm(denominator1, denominator2);
+            if (numerator1 == 0)
+                //返回相反数
+                return properFraction(String.valueOf(numerator2 * (-1)) + "/" + String.valueOf(denominator2));
+            if (numerator2 == 0) return fraction1;
+            //取分母最小公倍数
+            long l = lcm(denominator1, denominator2);
             numerator1 = l / denominator1 * numerator1;
             numerator2 = l / denominator2 * numerator2;
+            if (numerator1 - numerator2 == 0) return "0";
+            //rpf(int numerator,int denominator)约分
             return properFraction(rof(numerator1 - numerator2, l));
         }
+        //分数乘
         if (operator.equals("✖")) {
+            //任一分子为零，返回 0
+            if (numerator1 == 0 || numerator2 == 0) return "0";
+            //分子与分子乘  分母与分母乘
             return properFraction(rof(numerator1 * numerator2, denominator1 * denominator2));
         }
+        //分数除
         if (operator.equals("➗")) {
+            //分子为零 返回 0
+            if (numerator1 == 0) return "0";
+            //分母不为 0
+            if (numerator2 == 0) return null;
             return properFraction(rof(numerator1 * denominator2, numerator2 * denominator1));
         }
+
         return null;
     }
 
     //对假分数约分
-    public static String rof(int numerator, int denominator) {
-        int g = gcd(numerator, denominator);
+    public static String rof(long numerator, long denominator) {
+        //求分子分母最大公约数
+        long g = gcd(numerator, denominator);
         return String.valueOf(numerator / g) + "/" + String.valueOf(denominator / g);
     }
 
@@ -81,11 +141,11 @@ public class Fraction {
     }
 
     //求最大公约数
-    public static int gcd(int a, int b) {//调用函数递归 更相减损法 简易写法
+    public static long gcd(long a, long b) {
         if (a < 0) a = Math.abs(a);
         if (b < 0) b = Math.abs(b);
         if (a < b) {
-            int tmp = a;
+            long tmp = a;
             a = b;
             b = tmp;
         }
@@ -93,8 +153,8 @@ public class Fraction {
     }
 
     //求最小公倍数
-    public static int lcm(int a, int b) {
-        int c = gcd(a, b);
+    public static long lcm(long a, long b) {
+        long c = gcd(a, b);
         return a / c * b;
     }
 }
