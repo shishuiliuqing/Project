@@ -3,9 +3,38 @@ package operation;
 import java.util.Random;
 
 public class arithmeticExpression {
-    public static final int OPERATOR = 1;
+    public static final int EXPRESSION = 1;
     public static final int DIGIT = 0;
-    public static final String[] OPERATORS = {"➕", "➖", "✖", "➗"};
+    public static final String[] OPERATORS = {"➕", "➖", "➗", "✖"};
+
+    private boolean head;
+    private int flag;
+    private String element;
+    private int num;
+
+    private arithmeticExpression next = null;
+    private arithmeticExpression firstChild = null;
+    private String answer;
+
+    public arithmeticExpression() {
+    }
+
+    public arithmeticExpression(boolean head, int num, String operator, int range) {
+        this.head = head;
+        init(this, num, operator, range);
+    }
+
+    public String getElement() {
+        return element;
+    }
+
+    public arithmeticExpression getNext() {
+        return next;
+    }
+
+    public arithmeticExpression getFirstChild() {
+        return firstChild;
+    }
 
     public void setFlag(int flag) {
         this.flag = flag;
@@ -15,64 +44,81 @@ public class arithmeticExpression {
         this.element = element;
     }
 
-    private int flag;
-    private String element;
-
-    public void setLeft(arithmeticExpression left) {
-        this.left = left;
+    public void setNum(int num) {
+        this.num = num;
     }
 
-    public void setRight(arithmeticExpression right) {
-        this.right = right;
+    public void setNext(arithmeticExpression next) {
+        this.next = next;
     }
 
-    private arithmeticExpression left;
-    private arithmeticExpression right;
-
-    private String answer;
-
-    public arithmeticExpression(int len, int range) {
-        init(this, len, range);
-        initAnswer(this);
+    public void setFirstChild(arithmeticExpression firstChild) {
+        this.firstChild = firstChild;
     }
 
-    public void init(arithmeticExpression ae, int len, int range) {
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public void init(arithmeticExpression ae, int num, String operator, int range) {
         Random r = new Random();
-        if (len == 0) {
-            ae = null;
-            return;
-        }
-
-        if (len == 1) {
+        if (num == 0) {
             ae.setFlag(DIGIT);
+            ae.setNum(0);
             ae.setElement(String.valueOf(r.nextInt(range - 1) + 1));
-            ae.setLeft(null);
-            ae.setRight(null);
+            ae.setNext(null);
+            ae.setFirstChild(null);
             return;
         }
 
-        ae.setFlag(OPERATOR);
-        ae.setElement(OPERATORS[r.nextInt(4)]);
+        ae.setFlag(EXPRESSION);
+        ae.setElement(operator);
+        ae.setNum(randomNum(num, false));
 
-        ae.setLeft(new arithmeticExpression(len - len / 2, range));
-        ae.setRight(new arithmeticExpression(len / 2, range));
-        return;
+        int x, operatorIndex;
+        arithmeticExpression p;
+        num -= this.num;
+        x = randomNum(num, true);
+        operatorIndex = generateOperator(this.head);
+        p = new arithmeticExpression(false, x, OPERATORS[operatorIndex], range);
+        ae.setFirstChild(p);
+        for (int i = 0; i < this.num; i++) {
+            num -= x;
+            if (i == this.num - 1) x = num;
+            else x = randomNum(num, true);
+            operatorIndex = generateOperator(false);
+            p.setNext(new arithmeticExpression(false, x, OPERATORS[operatorIndex], range));
+            p = p.getNext();
+        }
     }
 
-    private void initAnswer(arithmeticExpression ae) {
-        return;
+    private int randomNum(int num, boolean needZero) {
+        Random r = new Random();
+        if (num == 0) return 0;
+        if (needZero) return r.nextInt(num + 1);
+        return r.nextInt(num) + 1;
+    }
+
+    private int generateOperator(boolean head) {
+        Random r = new Random();
+        if (head) {
+            if (this.element.equals(OPERATORS[0])) return r.nextInt(3) + 1;
+            if (this.element.equals(OPERATORS[1])) return r.nextInt(3) + 1;
+            if (this.element.equals(OPERATORS[2])) return r.nextInt(3);
+            if (this.element.equals(OPERATORS[3])) return r.nextInt(3);
+        }
+        return r.nextInt(4);
     }
 
     @Override
     public String toString() {
-        String s1 = "";
-        String s2 = "";
-        if(left != null) {
-            s1 = left.toString();
+        if (this.flag == DIGIT) return this.element + " ";
+        StringBuilder sb = new StringBuilder();
+        arithmeticExpression ae;
+        for (ae = this.firstChild; ae != null; ae = ae.getNext()) {
+            sb.append(ae.toString());
+            if (ae.getNext() != null) sb.append(this.element + " ");
         }
-        if(right != null) {
-            s2 = right.toString();
-        }
-        return  s1 + " " + element + " " + s2;
+        return sb.toString();
     }
 }
