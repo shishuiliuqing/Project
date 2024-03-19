@@ -2,7 +2,7 @@ package operation;
 
 import java.util.Random;
 
-public class arithmeticExpression {
+public class ArithmeticExpression {
     public static final int EXPRESSION = 1;
     public static final int DIGIT = 0;
     public static final String[] OPERATORS = {"➕", "➖", "➗", "✖"};
@@ -12,14 +12,14 @@ public class arithmeticExpression {
     private String element;
     private int num;
 
-    private arithmeticExpression next = null;
-    private arithmeticExpression firstChild = null;
+    private ArithmeticExpression next = null;
+    private ArithmeticExpression firstChild = null;
     private String answer;
 
-    public arithmeticExpression() {
+    public ArithmeticExpression() {
     }
 
-    public arithmeticExpression(boolean head, int num, String operator, int range) {
+    public ArithmeticExpression(boolean head, int num, String operator, int range) {
         this.head = head;
         init(this, num, operator, range);
     }
@@ -28,11 +28,11 @@ public class arithmeticExpression {
         return element;
     }
 
-    public arithmeticExpression getNext() {
+    public ArithmeticExpression getNext() {
         return next;
     }
 
-    public arithmeticExpression getFirstChild() {
+    public ArithmeticExpression getFirstChild() {
         return firstChild;
     }
 
@@ -48,11 +48,11 @@ public class arithmeticExpression {
         this.num = num;
     }
 
-    public void setNext(arithmeticExpression next) {
+    public void setNext(ArithmeticExpression next) {
         this.next = next;
     }
 
-    public void setFirstChild(arithmeticExpression firstChild) {
+    public void setFirstChild(ArithmeticExpression firstChild) {
         this.firstChild = firstChild;
     }
 
@@ -60,7 +60,7 @@ public class arithmeticExpression {
         this.answer = answer;
     }
 
-    public void init(arithmeticExpression ae, int num, String operator, int range) {
+    public void init(ArithmeticExpression ae, int num, String operator, int range) {
         Random r = new Random();
         if (num == 0) {
             ae.setFlag(DIGIT);
@@ -76,18 +76,18 @@ public class arithmeticExpression {
         ae.setNum(randomNum(num, false));
 
         int x, operatorIndex;
-        arithmeticExpression p;
+        ArithmeticExpression p;
         num -= this.num;
         x = randomNum(num, true);
         operatorIndex = generateOperator(this.head);
-        p = new arithmeticExpression(false, x, OPERATORS[operatorIndex], range);
+        p = new ArithmeticExpression(false, x, OPERATORS[operatorIndex], range);
         ae.setFirstChild(p);
         for (int i = 0; i < this.num; i++) {
             num -= x;
             if (i == this.num - 1) x = num;
             else x = randomNum(num, true);
             operatorIndex = generateOperator(false);
-            p.setNext(new arithmeticExpression(false, x, OPERATORS[operatorIndex], range));
+            p.setNext(new ArithmeticExpression(false, x, OPERATORS[operatorIndex], range));
             p = p.getNext();
         }
     }
@@ -114,7 +114,7 @@ public class arithmeticExpression {
     public String toString() {
         if (this.flag == DIGIT) return this.element + " ";
         StringBuilder sb = new StringBuilder();
-        arithmeticExpression ae;
+        ArithmeticExpression ae;
         for (ae = this.firstChild; ae != null; ae = ae.getNext()) {
             sb.append(ae.toString());
             if (ae.getNext() != null) sb.append(this.element + " ");
