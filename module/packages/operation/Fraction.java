@@ -3,6 +3,12 @@ package operation;
 public class Fraction {
     private Fraction() {
     }
+    //判断一个分数是否小于0
+    public static boolean isLessThenZero(String fraction) {
+        if (fraction == null) return true;
+        fraction = improperFraction(fraction);
+        return getNumerator(fraction) < 0;
+    }
 
     //将分数转化为假分数，整数会变成该整数除以 1
     public static String improperFraction(String proper) {
@@ -24,11 +30,11 @@ public class Fraction {
         //分母
         denominator = Integer.parseInt(strings[2]);
         //整数为 0 , 直接返回分子/分母
-        if (integer == 0) return String.valueOf(numerator) + "/" + String.valueOf(denominator);
+        if (integer == 0) return numerator + "/" + denominator;
         //假分数分子
         numerator = (numerator + Math.abs(integer) * denominator) * (integer / Math.abs(integer));
         //分子分母拼接
-        return String.valueOf(numerator) + "/" + String.valueOf(denominator);
+        return numerator + "/" + denominator;
     }
 
     //将假分数转化为真分数
@@ -51,7 +57,7 @@ public class Fraction {
             denominator *= -1;
         }
         //分子小于分母时无整数
-        if (Math.abs(numerator) < denominator) return String.valueOf(numerator) + "/" + String.valueOf(denominator);
+        if (Math.abs(numerator) < denominator) return numerator + "/" + denominator;
         //将分子的负号移至整数
         if (numerator < 0) {
             integer = -1;
@@ -64,7 +70,7 @@ public class Fraction {
         //分子
         numerator %= denominator;
         //拼接
-        return String.valueOf(integer) + "’" + String.valueOf(numerator) + "/" + String.valueOf(denominator);
+        return integer + "’" + numerator + "/" + denominator;
     }
 
     //分数计算
@@ -77,7 +83,7 @@ public class Fraction {
         long denominator1 = getDenominator(fraction1);
         long denominator2 = getDenominator(fraction2);
         //分数加
-        if (operator.equals("➕")) {
+        if (operator.equals("+")) {
             if (numerator1 == 0) return fraction2;
             if (numerator2 == 0) return fraction1;
             //取分母最小公倍数
@@ -89,10 +95,10 @@ public class Fraction {
             return properFraction(rof(numerator1 + numerator2, l));
         }
         //分数减
-        if (operator.equals("➖")) {
+        if (operator.equals("-")) {
             if (numerator1 == 0)
                 //返回相反数
-                return properFraction(String.valueOf(numerator2 * (-1)) + "/" + String.valueOf(denominator2));
+                return properFraction(numerator2 * (-1) + "/" + denominator2);
             if (numerator2 == 0) return fraction1;
             //取分母最小公倍数
             long l = lcm(denominator1, denominator2);
@@ -103,14 +109,14 @@ public class Fraction {
             return properFraction(rof(numerator1 - numerator2, l));
         }
         //分数乘
-        if (operator.equals("✖")) {
+        if (operator.equals("×")) {
             //任一分子为零，返回 0
             if (numerator1 == 0 || numerator2 == 0) return "0";
             //分子与分子乘  分母与分母乘
             return properFraction(rof(numerator1 * numerator2, denominator1 * denominator2));
         }
         //分数除
-        if (operator.equals("➗")) {
+        if (operator.equals("÷")) {
             //分子为零 返回 0
             if (numerator1 == 0) return "0";
             //分母不为 0
@@ -125,7 +131,7 @@ public class Fraction {
     public static String rof(long numerator, long denominator) {
         //求分子分母最大公约数
         long g = gcd(numerator, denominator);
-        return String.valueOf(numerator / g) + "/" + String.valueOf(denominator / g);
+        return numerator / g + "/" + denominator / g;
     }
 
     //获取一个分数的分子，真分数会转化为假分数

@@ -8,7 +8,7 @@ public class ArithmeticExpression {
     //常量：表示数字
     public static final int DIGIT = 0;
     //常量：加减乘除符号
-    public static final String[] OPERATORS = {"➕", "➖", "➗", "✖"};
+    public static final String[] OPERATORS = {"+", "-", "÷", "×"};
 
     //是否为头结点对象
     private final boolean head;
@@ -33,11 +33,6 @@ public class ArithmeticExpression {
         init(this, num, operator, range);
         //求结果
         initAnswer();
-    }
-
-    //返回元素
-    public String getElement() {
-        return element;
     }
 
     //返回结果
@@ -91,11 +86,13 @@ public class ArithmeticExpression {
             ae.setFirstChild(null);
             return;
         }
-
+        //算术表达式
         ae.setFlag(EXPRESSION);
+        //运算符
         ae.setElement(operator);
+        //运算符个数
         ae.setNum(randomNum(num, false));
-
+        //首孩子的运算符以及运算符个数
         int x, operatorIndex;
         ArithmeticExpression p;
         num -= this.num;
@@ -103,6 +100,7 @@ public class ArithmeticExpression {
         operatorIndex = generateOperator(this.head);
         p = new ArithmeticExpression(false, x, OPERATORS[operatorIndex], range);
         ae.setFirstChild(p);
+        //为每个孩子添加运算符以及运算符个数
         for (int i = 0; i < this.num; i++) {
             num -= x;
             if (i == this.num - 1) x = num;
@@ -112,7 +110,7 @@ public class ArithmeticExpression {
             p = p.getNext();
         }
     }
-
+    //初始化答案，使用递归算法
     private void initAnswer() {
         if (this.flag == DIGIT) {
             this.answer = this.element;
@@ -127,14 +125,14 @@ public class ArithmeticExpression {
 //            System.out.println(this.answer);
         }
     }
-
+    //生成一个到num的整数，是否从零开始
     private int randomNum(int num, boolean needZero) {
         Random r = new Random();
         if (num == 0) return 0;
         if (needZero) return r.nextInt(num + 1);
         return r.nextInt(num) + 1;
     }
-
+    //随机生成一个运算符
     private int generateOperator(boolean head) {
         Random r = new Random();
         if (head) {
@@ -145,39 +143,84 @@ public class ArithmeticExpression {
         }
         return r.nextInt(4);
     }
-
+    //打印题目，使用递归算法
     @Override
     public String toString() {
         if (this.flag == DIGIT) return this.element;
         StringBuilder sb = new StringBuilder();
         ArithmeticExpression ae = this.firstChild;
-        if(ae.addBracket(this.element,true)) {
-            sb.append("(").append(ae.toString()).append(")");
+        if (ae.addBracket(this.element, true)) {
+            sb.append("(").append(ae).append(")");
         } else {
-            sb.append(ae.toString());
+            sb.append(ae);
         }
         for (ae = ae.getNext(); ae != null; ae = ae.getNext()) {
-            if(ae.addBracket(this.element,false)) {
+            if (ae.addBracket(this.element, false)) {
                 sb.append(" ").append(this.element).append(" ");
-                sb.append("(").append(ae.toString()).append(")");
+                sb.append("(").append(ae).append(")");
             } else {
-                sb.append(" ").append(this.element).append(" ").append(ae.toString());
+                sb.append(" ").append(this.element).append(" ").append(ae);
             }
         }
         return sb.toString();
     }
-
+    //对必要情况添加括号
     private boolean addBracket(String lastElement, boolean first) {
-        if(this.flag == DIGIT) return false;
-        if (lastElement.equals("➖")) {
-            return !first && (this.element.equals("➕") || this.element.equals("➖"));
+        if (this.flag == DIGIT) return false;
+        if (lastElement.equals("-")) {
+            return !first && (this.element.equals("+") || this.element.equals("-"));
         }
-        if (lastElement.equals("✖")) {
-            return this.element.equals("➖") || this.element.equals("➕");
+        if (lastElement.equals("×")) {
+            return this.element.equals("-") || this.element.equals("+");
         }
-        if (lastElement.equals("➗")) {
-            return !first || this.element.equals("➖") || this.element.equals("➕");
+        if (lastElement.equals("÷")) {
+            return !first || this.element.equals("-") || this.element.equals("+");
         }
         return false;
+    }
+    //交换律，返回一个字符串数组，里面包含自身与有限交换的所有结果
+    public String[] commutativeLaw() {
+        if(this.element.equals("-") || this.element.equals("÷")) {
+            String[] strings = new String[1];
+            strings[0] = this.toString();
+            return strings;
+        }
+
+        String[] strings = new String[this.num + 1];
+        ArithmeticExpression ae = this.firstChild;
+        while (ae.getNext() != null) {
+            ae = ae.getNext();
+        }
+        strings[0] = this.toString();
+        for (int i = 1; i < strings.length; i++) {
+            ae = exchange(ae);
+            strings[i] = this.toString();
+        }
+        exchange(ae);
+        return strings;
+    }
+    //交换头孩子与尾孩子的位置
+    private ArithmeticExpression exchange(ArithmeticExpression ae) {
+        ae.setNext(this.firstChild);
+        this.setFirstChild(this.firstChild.getNext());
+        ae.getNext().setNext(null);
+        ae = ae.getNext();
+        return ae;
+    }
+    //题目解析
+    public static String problemAnalysis(String exercise) {
+        if(exercise == null) return null;
+        String[] strings = exercise.split("[()]");
+        String answer = "0";
+        String operator;
+        for (int i = 0; i < strings.length; i++) {
+            if(strings[i].length() < 3) {
+
+            }
+            else {
+
+            }
+        }
+        return answer;
     }
 }
