@@ -1,0 +1,4 @@
+请使用cmd用命令行执行
+命令如下：
+MyApp.exe -n number -r range      (number为生成题目个数，range为生成题目数字范围，两者均为自定义正整数)
+MyApp.exe -e exercisefile -a answerfile (exercisefile为题目文件名字，answerfile为答案文件名字)
