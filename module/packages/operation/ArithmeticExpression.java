@@ -220,26 +220,28 @@ public class ArithmeticExpression {
         if (exercise == null) return null;
         if (exercise.equals("")) return null;
         exercise = exercise.replaceAll("[\\s=]", "");
-        String[] strings = exercise.split("[()]");
-        return bracketAnalysis(strings, 0, false);
+        return bracketAnalysis(exercise);
     }
 
     //题目解析--括号
-    private static String bracketAnalysis(String[] strings, int begin, boolean isBracket) {
+    private static String bracketAnalysis(String exercise) {
         StringBuilder answer = new StringBuilder();
-        if (isBracket) {
-            if (tailIsNumber(strings[begin])) return addAnalysis(strings[begin]);
-            answer.append(strings[begin]).append(bracketAnalysis(strings, begin + 1, true));
-            return addAnalysis(answer.toString());
-        }
-        for (int i = begin; i < strings.length; i++) {
-            if (strings[i].equals("")) continue;
-            if (tailIsNumber(strings[i])) answer = new StringBuilder(addAnalysis(answer + strings[i]));
-            else {
-                answer.append(strings[i]).append(bracketAnalysis(strings, i + 1, true));
-                while (!tailIsNumber(strings[i])) {
-                    i++;
-                }
+        for (int i = 0; i < exercise.length(); i++) {
+            if (exercise.charAt(i) == 0) continue;
+            if (exercise.charAt(i) != '(' && exercise.charAt(i) != ')') answer.append(exercise.charAt(i));
+            else if (exercise.charAt(i) == '(') {
+                int n = 1;
+                int j = i;
+                do {
+                    j++;
+                    if (exercise.charAt(j) == '(') n++;
+                    else if (exercise.charAt(j) == ')') n--;
+                } while (n != 0);
+                String str = bracketAnalysis(exercise.substring(i + 1, j));
+                if (Fraction.isLessThenZero(str)) {
+                    answer.append(str.substring(1)).append("n");
+                } else answer.append(str);
+                i = j;
             }
         }
         return addAnalysis(answer.toString());
@@ -252,8 +254,11 @@ public class ArithmeticExpression {
         String[] strings = exercise.split("\\+");
         String answer = "0";
         for (String string : strings) {
-            if (isNumber(string)) answer = Fraction.calculate(answer, string, OPERATORS[0]);
-            else answer = Fraction.calculate(answer, subAnalysis(string), OPERATORS[0]);
+            if (isNumber(string)) {
+                if (isNegative(string))
+                    answer = Fraction.calculate(answer, "-" + string.substring(0, string.length() - 1), OPERATORS[0]);
+                else answer = Fraction.calculate(answer, string, OPERATORS[0]);
+            } else answer = Fraction.calculate(answer, subAnalysis(string), OPERATORS[0]);
         }
         return answer;
     }
@@ -262,11 +267,16 @@ public class ArithmeticExpression {
     private static String subAnalysis(String exercise) {
         String[] strings = exercise.split("-");
         String answer;
-        if (isNumber(strings[0])) answer = strings[0];
-        else answer = mulAnalysis(strings[0]);
+        if (isNumber(strings[0])) {
+            if (isNegative(strings[0])) answer = "-" + strings[0].substring(0, strings[0].length() - 1);
+            else answer = strings[0];
+        } else answer = mulAnalysis(strings[0]);
         for (int i = 1; i < strings.length; i++) {
-            if (isNumber(strings[i])) answer = Fraction.calculate(answer, strings[i], OPERATORS[1]);
-            else answer = Fraction.calculate(answer, mulAnalysis(strings[i]), OPERATORS[1]);
+            if (isNumber(strings[i])) {
+                if (isNegative(strings[i]))
+                    answer = Fraction.calculate(answer, "-" + strings[i].substring(0, strings[i].length() - 1), OPERATORS[1]);
+                else answer = Fraction.calculate(answer, strings[i], OPERATORS[1]);
+            } else answer = Fraction.calculate(answer, mulAnalysis(strings[i]), OPERATORS[1]);
         }
         return answer;
     }
@@ -276,8 +286,11 @@ public class ArithmeticExpression {
         String[] strings = exercise.split("×");
         String answer = "1";
         for (String string : strings) {
-            if (isNumber(string)) answer = Fraction.calculate(answer, string, OPERATORS[3]);
-            else answer = Fraction.calculate(answer, divAnalysis(string), OPERATORS[3]);
+            if (isNumber(string)) {
+                if (isNegative(string))
+                    answer = Fraction.calculate(answer, "-" + string.substring(0, string.length() - 1), OPERATORS[3]);
+                else answer = Fraction.calculate(answer, string, OPERATORS[3]);
+            } else answer = Fraction.calculate(answer, divAnalysis(string), OPERATORS[3]);
         }
         return answer;
     }
@@ -285,9 +298,13 @@ public class ArithmeticExpression {
     //题目解析--除号
     private static String divAnalysis(String exercise) {
         String[] strings = exercise.split("÷");
-        String answer = strings[0];
+        String answer;
+        if (isNegative(strings[0])) answer = "-" + strings[0].substring(0, strings[0].length() - 1);
+        else answer = strings[0];
         for (int i = 1; i < strings.length; i++) {
-            answer = Fraction.calculate(answer, strings[i], OPERATORS[2]);
+            if (isNegative(strings[i]))
+                answer = Fraction.calculate(answer, "-" + strings[i].substring(0, strings[i].length() - 1), OPERATORS[2]);
+            else answer = Fraction.calculate(answer, strings[i], OPERATORS[2]);
         }
         return answer;
     }
@@ -300,13 +317,8 @@ public class ArithmeticExpression {
         return true;
     }
 
-    //判断尾字符是否为数字
-    private static boolean tailIsNumber(String exercise) {
-        if (exercise.equals("")) return false;
-        exercise = exercise.substring(exercise.length() - 1);
-        for (String operator : OPERATORS) {
-            if (exercise.equals(operator)) return false;
-        }
-        return true;
+    //题目解析--判断是否为负数
+    private static boolean isNegative(String exercise) {
+        return exercise.charAt(exercise.length() - 1) == 'n';
     }
 }
