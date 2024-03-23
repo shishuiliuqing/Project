@@ -83,7 +83,7 @@ public class Fraction {
         long denominator1 = getDenominator(fraction1);
         long denominator2 = getDenominator(fraction2);
         //分数加
-        if (operator.equals("+")) {
+        if (operator.equals(ArithmeticExpression.OPERATORS[0])) {
             if (numerator1 == 0) return fraction2;
             if (numerator2 == 0) return fraction1;
             //取分母最小公倍数
@@ -95,7 +95,7 @@ public class Fraction {
             return properFraction(rof(numerator1 + numerator2, l));
         }
         //分数减
-        if (operator.equals("-")) {
+        if (operator.equals(ArithmeticExpression.OPERATORS[1])) {
             if (numerator1 == 0)
                 //返回相反数
                 return properFraction(numerator2 * (-1) + "/" + denominator2);
@@ -109,14 +109,14 @@ public class Fraction {
             return properFraction(rof(numerator1 - numerator2, l));
         }
         //分数乘
-        if (operator.equals("×")) {
+        if (operator.equals(ArithmeticExpression.OPERATORS[3])) {
             //任一分子为零，返回 0
             if (numerator1 == 0 || numerator2 == 0) return "0";
             //分子与分子乘  分母与分母乘
             return properFraction(rof(numerator1 * numerator2, denominator1 * denominator2));
         }
         //分数除
-        if (operator.equals("÷")) {
+        if (operator.equals(ArithmeticExpression.OPERATORS[2])) {
             //分子为零 返回 0
             if (numerator1 == 0) return "0";
             //分母不为 0
