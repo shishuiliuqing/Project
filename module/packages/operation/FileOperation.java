@@ -17,7 +17,7 @@ public class FileOperation {
     }
 
     //生成n到题目及答案，生成题目文件和答案文件
-    public void generateQuestionsAndAnswer(int n) throws IOException {
+    public void generateQuestionsAndAnswer(int n, int range) throws IOException {
         //答案文本写入对象
         FileWriter fw1 = new FileWriter(answerFile);
         //题目文本写入对象
@@ -27,7 +27,7 @@ public class FileOperation {
         int num = 0;
         //生成n道题目
         while (num < n) {
-            String answer = generateQuestions(sb);
+            String answer = generateQuestions(sb, range);
             if (answer == null) continue;
             num++;
             generateAnswer(fw1, answer, num);
@@ -54,13 +54,13 @@ public class FileOperation {
     }
 
     //生成一道题目，返回题目答案
-    private String generateQuestions(StringBuilder sb) {
+    private String generateQuestions(StringBuilder sb, int range) {
         //运算符数组
         final String[] OPERATORS = {"+", "−", "÷", "×"};
         //随机数对象
         Random r = new Random();
         //算术表达式对象
-        ArithmeticExpression ae = new ArithmeticExpression(true, r.nextInt(3) + 1, OPERATORS[r.nextInt(4)], 10);
+        ArithmeticExpression ae = new ArithmeticExpression(true, r.nextInt(3) + 1, OPERATORS[r.nextInt(4)], range);
         //非负判断
         if (Fraction.isLessThenZero(ae.getAnswer())) return null;
         String[] strings = ae.commutativeLaw();

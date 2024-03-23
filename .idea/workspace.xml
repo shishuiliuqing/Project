@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Main" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db895ded-8b12-4643-af1c-1ab32a2b51dc" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/moudle/packages/operation/Fraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moudle/packages/operation/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/moudle/packages/operation/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moudle/packages/operation/arithmeticExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/moudle/packages/operation/ArithmeticExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/packages/operation/ArithmeticExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/module/packages/operation/ArithmeticExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/packages/operation/FileOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/module/packages/operation/FileOperation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/packages/operation/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/module/packages/operation/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +34,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2drwwqjmJBKD4Pfccadtlu2oTcF" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -42,20 +50,34 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "17",
+    "last_opened_file_path": "D:/Project/JAVA_Project/operationGenerator/module/packages/operation/META-INF/MANIFEST.MF",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "模块",
+    "project.structure.last.edited": "工件",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="应用程序.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="operation.Main" />
-      <module name="moudle" />
+      <module name="module" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="operation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="operation.Test" />
+      <module name="module" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="operation.*" />
@@ -69,6 +91,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="应用程序.Main" />
+        <item itemvalue="应用程序.Test" />
       </list>
     </recent_temporary>
   </component>
@@ -81,11 +104,27 @@
       <option name="presentableId" value="Default" />
       <updated>1710779747860</updated>
       <workItem from="1710779749446" duration="980000" />
-      <workItem from="1710825061944" duration="16523000" />
+      <workItem from="1710825061944" duration="33112000" />
+      <workItem from="1711113672018" duration="5651000" />
+      <workItem from="1711119439933" duration="30000" />
+      <workItem from="1711119496165" duration="3948000" />
+      <workItem from="1711171364294" duration="3676000" />
+      <workItem from="1711175130434" duration="14477000" />
+      <workItem from="1711189799838" duration="1714000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArithmeticException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

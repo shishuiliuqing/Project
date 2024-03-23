@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/moudle/moudle.iml" filepath="$PROJECT_DIR$/moudle/moudle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module/module.iml" filepath="$PROJECT_DIR$/module/module.iml" />
       <module fileurl="file://$PROJECT_DIR$/operationGenerator.iml" filepath="$PROJECT_DIR$/operationGenerator.iml" />
     </modules>
   </component>

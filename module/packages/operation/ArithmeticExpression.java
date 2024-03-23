@@ -8,7 +8,7 @@ public class ArithmeticExpression {
     //常量：表示数字
     public static final int DIGIT = 0;
     //常量：加减乘除符号
-    public static final String[] OPERATORS = {"+", "−", "÷", "×"};
+    public static final String[] OPERATORS = {"+", "-", "÷", "×"};
 
     //是否为头结点对象
     private final boolean head;
@@ -260,7 +260,7 @@ public class ArithmeticExpression {
 
     //题目解析--减号
     private static String subAnalysis(String exercise) {
-        String[] strings = exercise.split("−");
+        String[] strings = exercise.split("-");
         String answer;
         if (isNumber(strings[0])) answer = strings[0];
         else answer = mulAnalysis(strings[0]);
